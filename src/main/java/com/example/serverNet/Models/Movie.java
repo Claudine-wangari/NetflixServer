@@ -35,6 +35,18 @@ public class Movie
     @JoinTable(name = "movie_categories", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
+    private Movie movie;
+
+    public Movie getMovie()
+    {
+        return movie;
+    }
+
+    public void setMovie(Movie movie)
+    {
+        this.movie = movie;
+    }
+
     public Movie()
     { }
 

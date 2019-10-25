@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category, Long>
 {
@@ -15,5 +16,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long>
     List<Movie> findMoviesByCategoryName(@Param("category_name") String category);
 
 
-
+    Optional<Category> findById(Category category_id);
 }

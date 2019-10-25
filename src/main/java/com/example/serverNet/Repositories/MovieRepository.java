@@ -10,7 +10,7 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie, Long>
 {
     //Getting a movie by the type whether suggested or original
-     List<Movie> findMovieByMovie_name(MovieType movieType);
+     List<Movie> findMovieByMovie_MovieType(MovieType movieType);
 
     //Getting a movie by its name
      Movie findMovieByMovie_name(String movie_name);
