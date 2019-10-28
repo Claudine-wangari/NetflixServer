@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@RequestMapping("movies")
 public class MovieController
 {
     private  final MovieService movieService;
@@ -50,7 +51,7 @@ public class MovieController
     @GetMapping(value = "movies/{movie_name}")
     Movie getMovieByName(@RequestParam String movie_name)
     {
-        return movieService.findMovieByName(movie_name).orElseThrow(()-> new NotFoundException("Movie: " + movie_name + " not found."));
+        return movieService.findMovieByName(movie_name);
     }
 
     //Viewing all movies added by a SPECIFIC USER
@@ -92,7 +93,7 @@ public class MovieController
 
         for(Category category_id : movie.getCategories())
         {
-            Category category = categoryRepository.findById(category_id).orElseThrow(()->new NotFoundException("Category id: "+ category_id +"not found"));
+            Category category = (Category) categoryRepository.findById(category_id);
             categories.add(category);
         }
 
@@ -134,8 +135,7 @@ public class MovieController
         else
         {Set<Category> categories = new HashSet<>();
             for (Category category_id : movie.getCategories()) {
-                Category category = categoryRepository.findById(category_id).orElseThrow(() -> new NotFoundException("Category with Id:" + category_id + "does not exist"));
-                categories.add(category);
+                Category category = (Category) categoryRepository.findById(category_id);               categories.add(category);
             }
             movie.getMovie().setCategories(categories);
             movie.getMovie().setMovie_id(requestedMovie.getMovie_id());

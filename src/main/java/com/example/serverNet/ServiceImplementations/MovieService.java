@@ -2,10 +2,12 @@ package com.example.serverNet.ServiceImplementations;
 
 import com.example.serverNet.Models.Movie;
 import com.example.serverNet.MovieType;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public interface MovieService  {
     List<Movie> getAllMovies();
     Optional<Movie> findMovieById(Long movie_id);

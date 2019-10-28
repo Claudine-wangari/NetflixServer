@@ -13,8 +13,11 @@ public interface CategoryRepository extends JpaRepository<Category, Long>
 {
 
     @Query("SELECT g.movies from categories g where g.category_name = :category")
-    List<Movie> findMoviesByCategoryName(@Param("category_name") String category);
+    List<Movie> findMoviesByCategoryName(@Param("category_name") String category_name);
 
+    @Query(value = "FROM categories  WHERE category_name= ?1")
+    List<Category> getMoviesInCategory(String category_name);
 
-    Optional<Category> findById(Category category_id);
+    @Query("SELECT g.movies from categories g where g.category_id = :category")
+     List<Category> findById(@Param("category_id")Category category_id);
 }

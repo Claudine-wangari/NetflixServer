@@ -64,6 +64,7 @@ public class MovieServiceImpl implements MovieService
         return moviesInCategory;
     }
 
+    //Finding a movie using its name
     @Override
     public Movie findMovieByName(String movie_name) {
         return movieRepository.findMovieByMovie_name(movie_name);
@@ -75,18 +76,21 @@ public class MovieServiceImpl implements MovieService
         return movieRepository.findMovieByMovie_MovieType(movieType);
     }
 
+    //allow user to add a movie which will be suggested
     @Override
     public Movie addSuggestedMovie(Movie movie)
     {
         return movieRepository.save(movie);
     }
 
+    //To allow a user to delete a movie
     @Override
     public void deleteMovie(Long movie_id)
     {
         movieRepository.deleteById(movie_id);
     }
 
+    //Allowing a user to update a movie their added.
     @Override
     public Movie updateMovie(Movie movie)
     {
