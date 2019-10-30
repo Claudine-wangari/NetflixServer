@@ -1,6 +1,7 @@
 package com.example.serverNet.Repositories;
 
 import com.example.serverNet.Models.Movie;
+import com.example.serverNet.Models.User;
 import com.example.serverNet.MovieType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,9 +24,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long>
      List<Movie> findMoviesByUser(@Param("id") Long user);
 
 
-    List<Movie> findMoviesOfMovieTypeInCategory(MovieType movieType, Long category_id);
-
     List<Movie> findMoviesByMovieType(MovieType movieType);
 
-    List<Movie> findMovieById(Long movie_id);
+    List<Movie> findMoviesByUser(User currentUser);
 }

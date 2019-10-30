@@ -69,7 +69,7 @@ public class MovieController
     List<Movie> getMoviesInCategoryOfTypeById(@PathVariable Long category_id, @RequestParam MovieType movieType)
     {
         categoryRepository.findById(category_id).orElseThrow(()->new NotFoundException("Category id: "+ category_id +" not found."));
-        return movieRepository.findMoviesOfMovieTypeInCategory(movieType,category_id);
+        return movieService.findMoviesOfMovieTypeInCategory(movieType,category_id);
     }
 
     //Viewing a list of movies in a specific category and of a certain type using the CATEGORY NAME
@@ -102,7 +102,7 @@ public class MovieController
         movie.setCategories(categories);
         movie.setMovieType(MovieType.SUGGESTED);
         movie.setUser(user);
-        return movieRepository.save(movie);
+        return movieService.addSuggestedMovie(movie);
 
     }
 
@@ -111,8 +111,7 @@ public class MovieController
     public void deleteMovie(@PathVariable Long movie_id, @PathVariable Long id_number)
     {
         User currentUser = userRepository.findById(id_number).orElseThrow(()->new NotFoundException("User with id number:  "+ id_number + " not found"));
-        Movie requestedMovie = (Movie) movieRepository.findMovieById(movie_id);
-                //.orElseThrow(()->new NotFoundException("Movie with ID: "+ movie_id +" not found."));
+        Movie requestedMovie = movieService.findMovieById(movie_id).orElseThrow(()->new NotFoundException("Movie with ID: "+ movie_id +" not found."));
 
         if(currentUser.getId_number() != requestedMovie.getUser().getId_number())
         {
