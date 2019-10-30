@@ -31,20 +31,13 @@ public class Movie
     @JsonIgnore
     private User user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "movie_categories", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
-    private Movie movie;
-
-    public Movie getMovie()
-    {
-        return movie;
-    }
-
     public void setMovie(Movie movie)
     {
-        this.movie = movie;
+        this.movie_name = movie_name;
     }
 
     public Movie()
@@ -98,6 +91,14 @@ public class Movie
         this.categories = categories;
     }
 
+    public Movie(String movie_name, String year_released, MovieType movieType, User user, Set<Category> categories) {
+        this.movie_name = movie_name;
+        this.year_released = year_released;
+        this.movieType = movieType;
+        this.user = user;
+        this.categories = categories;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -109,4 +110,5 @@ public class Movie
                 ", categories=" + categories +
                 '}';
     }
+
 }

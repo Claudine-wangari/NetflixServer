@@ -7,11 +7,13 @@ import com.example.serverNet.Models.User;
 import com.example.serverNet.MovieType;
 import com.example.serverNet.Repositories.MovieRepository;
 import com.example.serverNet.Repositories.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MovieServiceImpl implements MovieService
 {
     private MovieRepository movieRepository;
@@ -80,6 +82,7 @@ public class MovieServiceImpl implements MovieService
     @Override
     public Movie addSuggestedMovie(Movie movie)
     {
+
         return movieRepository.save(movie);
     }
 

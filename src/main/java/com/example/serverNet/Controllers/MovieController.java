@@ -97,10 +97,10 @@ public class MovieController
             categories.add(category);
         }
 
-        movie.getMovie().setCategories(categories);
-        movie.getMovie().setMovieType(MovieType.SUGGESTED);
-        movie.getMovie().setUser(user);
-        return movieService.addSuggestedMovie(movie.getMovie());
+        movie.setCategories(categories);
+        movie.setMovieType(MovieType.SUGGESTED);
+        movie.setUser(user);
+        return movieService.addSuggestedMovie(movie);
 
     }
 
@@ -111,7 +111,7 @@ public class MovieController
         User currentUser = userRepository.findById(id_number).orElseThrow(()->new NotFoundException("User with id number:  "+ id_number + " not found"));
         Movie requestedMovie = movieService.findMovieById(movie_id).orElseThrow(()->new NotFoundException("Movie with ID: "+ movie_id +" not found."));
 
-        if(currentUser.getId() != requestedMovie.getUser().getId())
+        if(currentUser.getId_number() != requestedMovie.getUser().getId_number())
         {
             throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Ensure that you are only deleting a movie you added");
         }
@@ -128,19 +128,22 @@ public class MovieController
         User currentUser = userRepository.findById(id_number).orElseThrow(()->new NotFoundException("User with id number:  "+ id_number + " not found"));
         Movie requestedMovie = movieService.findMovieById(movie_id).orElseThrow(()->new NotFoundException("Movie with Id: "+ movie_id +" not found."));
 
-        if(currentUser.getId() != requestedMovie.getUser().getId())
+        if(currentUser.getId_number() != requestedMovie.getUser().getId_number())
         {
             throw  new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,"Ensure that you are the owner of the movie");
         }
         else
-        {Set<Category> categories = new HashSet<>();
-            for (Category category_id : movie.getCategories()) {
-                Category category = (Category) categoryRepository.findById(category_id);               categories.add(category);
+        {
+            Set<Category> categories = new HashSet<>();
+            for (Category category_id : movie.getCategories())
+            {
+                Category category = (Category) categoryRepository.findById(category_id);
+                categories.add(category);
             }
-            movie.getMovie().setCategories(categories);
-            movie.getMovie().setMovie_id(requestedMovie.getMovie_id());
-            movie.getMovie().setUser(currentUser);
-            return movieService.updateMovie(movie.getMovie());
+            movie.setCategories(categories);
+            movie.setMovie_id(requestedMovie.getMovie_id());
+            movie.setUser(currentUser);
+            return movieService.updateMovie(movie);
         }
     }
 }

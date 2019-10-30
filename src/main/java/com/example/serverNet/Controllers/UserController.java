@@ -30,7 +30,7 @@ public class UserController
     @PostMapping
     public User addUser(@RequestBody User user)
     {
-        if(user.getId() == null ||
+        if(user.getId_number() == null ||
                 user.getUsername() == null)
             throw new InvalidInputException("Id Number or Username missing. Ensure the fields are filled");
 

@@ -3,10 +3,13 @@ package com.example.serverNet.ServiceImplementations;
 import com.example.serverNet.Errorhandlers.AlreadyExistsException;
 import com.example.serverNet.Models.User;
 import com.example.serverNet.Repositories.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+
+@Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
@@ -28,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(User user) throws AlreadyExistsException
     {
-        Optional<User> presentUser = userRepository.findById(user.getId());
+        Optional<User> presentUser = userRepository.findById(user.getId_number());
 
         if(presentUser != null)
         {

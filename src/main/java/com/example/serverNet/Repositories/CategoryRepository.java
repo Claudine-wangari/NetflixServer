@@ -12,12 +12,12 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long>
 {
 
-    @Query("SELECT g.movies from categories g where g.category_name = :category")
-    List<Movie> findMoviesByCategoryName(@Param("category_name") String category_name);
+    @Query(value = "SELECT g.movies from categories g where g.category_name = :category_name",nativeQuery = true)
+    List<Movie> findMoviesByCategoryName(@Param("category_name") String category);
 
-    @Query(value = "FROM categories  WHERE category_name= ?1")
-    List<Category> getMoviesInCategory(String category_name);
+    @Query(value = "FROM categories  WHERE category_name= ?1",nativeQuery = true)
+    List<Category> getMoviesInCategory(String category);
 
-    @Query("SELECT g.movies from categories g where g.category_id = :category")
+    @Query(value = "SELECT g.movies from categories g where g.category_id = :category_id", nativeQuery = true)
      List<Category> findById(@Param("category_id")Category category_id);
 }

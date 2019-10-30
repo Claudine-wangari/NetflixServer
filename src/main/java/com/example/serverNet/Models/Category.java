@@ -19,9 +19,9 @@ public class Category
     @Column(name = "category_name")
     private String category;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
     @JsonIgnore
-    private Set<Movie> movies = new HashSet<>();
+    private Set<Movie> movie_name = new HashSet<>();
 
     public Category() {
     }
@@ -47,7 +47,7 @@ public class Category
         return "Category{" +
                 "category_id=" + category_id +
                 ", category='" + category + '\'' +
-                ", movies=" + movies +
+                ", movies=" + movie_name +
                 '}';
     }
 }

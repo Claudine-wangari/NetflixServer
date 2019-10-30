@@ -1,16 +1,19 @@
 package com.example.serverNet.Models;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="users")
 public class User
 {
-    @Column(name="id_number")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
     private Long id;
+
+    @Column(name="id_number")
+    private Long id_number;
 
     @Column(name="user_name")
     private String username;
@@ -18,17 +21,17 @@ public class User
     public User() {
     }
 
-    public User(Long id, String username) {
-        this.id = id;
+    public User(Long id_number, String username) {
+        this.id_number = id_number;
         this.username = username;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_number(Long id_number) {
+        this.id_number = id_number;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_number() {
+        return id_number;
     }
 
     public String getUsername() {
@@ -42,7 +45,7 @@ public class User
     @Override
     public String toString() {
         return "User{" +
-                "id='" + id + '\'' +
+                "id='" + id_number + '\'' +
                 ", username='" + username + '\'' +
                 '}';
     }

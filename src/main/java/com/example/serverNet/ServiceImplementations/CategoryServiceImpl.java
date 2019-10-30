@@ -4,12 +4,19 @@ import com.example.serverNet.Errorhandlers.NotFoundException;
 import com.example.serverNet.Models.Category;
 import com.example.serverNet.Models.Movie;
 import com.example.serverNet.Repositories.CategoryRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CategoryServiceImpl implements CategoryService
 {
     CategoryRepository categoryRepository;
+
+    public CategoryServiceImpl(CategoryRepository categoryRepository)
+    {
+        this.categoryRepository = categoryRepository;
+    }
 
     //Provides a list of all registered categories
     @Override

@@ -2,9 +2,11 @@ package com.example.serverNet.ServiceImplementations;
 
 import com.example.serverNet.Models.Category;
 import com.example.serverNet.Models.Movie;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface CategoryService
 {
 
