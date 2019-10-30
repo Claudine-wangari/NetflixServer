@@ -4,6 +4,7 @@ package com.example.serverNet.Controllers;
 import com.example.serverNet.Errorhandlers.AlreadyExistsException;
 import com.example.serverNet.Errorhandlers.InvalidInputException;
 import com.example.serverNet.Models.User;
+import com.example.serverNet.Repositories.UserRepository;
 import com.example.serverNet.ServiceImplementations.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,17 +14,19 @@ import java.util.List;
 @RequestMapping(value ="users")
 public class UserController
 {
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController( UserRepository userRepository)
+    {
+        this.userRepository = userRepository;
+
     }
 
     //Listing all users.
     @GetMapping
     public List<User> getAllUsers()
     {
-        return userService.getAllUsers();
+        return userRepository.findAll();
     }
 
     //Registering a User
@@ -34,9 +37,12 @@ public class UserController
                 user.getUsername() == null)
             throw new InvalidInputException("Id Number or Username missing. Ensure the fields are filled");
 
-        try {
-            return userService.addUser(user);
-        }catch (AlreadyExistsException exception){
+        try
+        {
+            return userRepository.save(user);
+        }
+        catch (AlreadyExistsException exception)
+        {
             throw new AlreadyExistsException("User Id Already Exists");
         }
     }

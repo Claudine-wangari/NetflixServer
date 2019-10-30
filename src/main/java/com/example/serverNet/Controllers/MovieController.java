@@ -6,6 +6,7 @@ import com.example.serverNet.Models.Movie;
 import com.example.serverNet.Models.User;
 import com.example.serverNet.MovieType;
 import com.example.serverNet.Repositories.CategoryRepository;
+import com.example.serverNet.Repositories.MovieRepository;
 import com.example.serverNet.Repositories.UserRepository;
 import com.example.serverNet.ServiceImplementations.MovieService;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,15 @@ import java.util.Set;
 @RequestMapping("movies")
 public class MovieController
 {
-    private  final MovieService movieService;
+    private  final MovieRepository movieRepository;
+    private final MovieService movieService;
     private final UserRepository userRepository;
     private CategoryRepository categoryRepository;
 
 
    //Creating objects for each repository to allow us access specific details of movies in other repositories
-    public MovieController(MovieService movieService, UserRepository userRepository, CategoryRepository categoryRepository)
-    {
+    public MovieController(MovieRepository movieRepository, MovieService movieService, UserRepository userRepository, CategoryRepository categoryRepository) {
+        this.movieRepository = movieRepository;
         this.movieService = movieService;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
@@ -37,28 +39,28 @@ public class MovieController
     @GetMapping(value = "movies")
     List<Movie> getAllMovies()
     {
-        return  movieService.getAllMovies();
+        return  movieRepository.findAll();
     }
 
     //Viewing a specific movie using its ID
     @GetMapping(value = "movies/{movie_id}")
     Movie getMovieById(@PathVariable(name = "movie_id") Long movie_id)
     {
-        return movieService.findMovieById(movie_id).orElseThrow(()-> new NotFoundException("Movie id: " + movie_id + " not found."));
+        return movieRepository.findById(movie_id).orElseThrow(()-> new NotFoundException("Movie id: " + movie_id + " not found."));
     }
 
     //Viewing a specific movie using its NAME
     @GetMapping(value = "movies/{movie_name}")
     Movie getMovieByName(@RequestParam String movie_name)
     {
-        return movieService.findMovieByName(movie_name);
+        return movieRepository.findMovieByMovie_name(movie_name);
     }
 
     //Viewing all movies added by a SPECIFIC USER
     @GetMapping(value = "movies/{id_number}")
     List<Movie> getUsersMovies(@PathVariable Long id_number)
     {
-        return movieService.findMoviesByUser(id_number);
+        return movieRepository.findMoviesByUser(id_number);
         //.orElseThrow(()->new NotFoundException("No movie added by id: "+ id_number + "found."));
     }
 
@@ -67,7 +69,7 @@ public class MovieController
     List<Movie> getMoviesInCategoryOfTypeById(@PathVariable Long category_id, @RequestParam MovieType movieType)
     {
         categoryRepository.findById(category_id).orElseThrow(()->new NotFoundException("Category id: "+ category_id +" not found."));
-        return movieService.findMoviesOfMovieTypeInCategory(movieType,category_id);
+        return movieRepository.findMoviesOfMovieTypeInCategory(movieType,category_id);
     }
 
     //Viewing a list of movies in a specific category and of a certain type using the CATEGORY NAME
@@ -82,7 +84,7 @@ public class MovieController
     @GetMapping("movies/type")
    List<Movie> findMoviesByMovieType(@RequestParam MovieType movieType)
     {
-        return movieService.findMoviesByMovieType(movieType);
+        return movieRepository.findMoviesByMovieType(movieType);
     }
 
     //User adding a movie they are suggesting
@@ -100,7 +102,7 @@ public class MovieController
         movie.setCategories(categories);
         movie.setMovieType(MovieType.SUGGESTED);
         movie.setUser(user);
-        return movieService.addSuggestedMovie(movie);
+        return movieRepository.save(movie);
 
     }
 
@@ -109,7 +111,8 @@ public class MovieController
     public void deleteMovie(@PathVariable Long movie_id, @PathVariable Long id_number)
     {
         User currentUser = userRepository.findById(id_number).orElseThrow(()->new NotFoundException("User with id number:  "+ id_number + " not found"));
-        Movie requestedMovie = movieService.findMovieById(movie_id).orElseThrow(()->new NotFoundException("Movie with ID: "+ movie_id +" not found."));
+        Movie requestedMovie = (Movie) movieRepository.findMovieById(movie_id);
+                //.orElseThrow(()->new NotFoundException("Movie with ID: "+ movie_id +" not found."));
 
         if(currentUser.getId_number() != requestedMovie.getUser().getId_number())
         {
@@ -117,7 +120,7 @@ public class MovieController
         }
         else
         {
-            movieService.deleteMovie(movie_id);
+            movieRepository.deleteById(movie_id);
         }
     }
 
