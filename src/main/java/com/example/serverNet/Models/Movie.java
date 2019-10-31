@@ -8,8 +8,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name="movies")
+@Entity(name = "movies")
 public class Movie
 {
     @Id

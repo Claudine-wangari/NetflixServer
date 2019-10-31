@@ -1,19 +1,18 @@
 package com.example.serverNet.Models;
 
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
-@Table(name="users")
+import javax.persistence.*;
+import java.util.List;
+
+@Entity(name="users")
 public class User
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
-    private Long id;
 
     @Column(name="id_number")
-    private Long id_number;
+    @Id
+    private String id_number;
 
     @Column(name="user_name")
     private String username;
@@ -21,23 +20,20 @@ public class User
     public User() {
     }
 
-    public User(Long id_number, String username)
+    public User(String id_number, String username)
     {
         this.id_number = id_number;
         this.username = username;
     }
 
-    public Long getId()
+
+    public String getId_number()
     {
-        return id;
-    }
-
-    public void setId_number(Long id_number) {
-        this.id_number = id_number;
-    }
-
-    public Long getId_number() {
         return id_number;
+    }
+
+    public void setId_number(String id_number) {
+        this.id_number = id_number;
     }
 
     public String getUsername() {
@@ -46,6 +42,18 @@ public class User
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Movie> suggestedMovies;
+
+    public List<Movie> getSuggestedMovies() {
+        return suggestedMovies;
+    }
+
+    public void setSuggestedMovies(List<Movie> suggestedMovies) {
+        this.suggestedMovies = suggestedMovies;
     }
 
     @Override

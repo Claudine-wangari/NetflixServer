@@ -1,6 +1,7 @@
 package com.example.serverNet.ServiceImplementations;
 
 import com.example.serverNet.Errorhandlers.AlreadyExistsException;
+import com.example.serverNet.Errorhandlers.NotFoundException;
 import com.example.serverNet.Models.User;
 import com.example.serverNet.Repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(User user) throws AlreadyExistsException
     {
-        Optional<User> presentUser = userRepository.findById(user.getId_number());
+        User presentUser = userRepository.findById(user.getId_number()).orElseThrow(()->new NotFoundException("User with id number:  "+ user.getId_number() + " not found"));
 
         if(presentUser != null)
         {

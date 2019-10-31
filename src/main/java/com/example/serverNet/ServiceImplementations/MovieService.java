@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface MovieService  {
     List<Movie> getAllMovies();
     Optional<Movie> findMovieById(Long movie_id);
-    List<Movie> findMoviesByUser(Long id_number);
+    List<Movie> findMoviesByUser(String id_number);
     List<Movie> findMoviesOfMovieTypeInCategory(MovieType movieType, Long category_id);
     Movie findMovieByName(String movie_name);
     List<Movie> findMoviesByMovieType(MovieType movieType);

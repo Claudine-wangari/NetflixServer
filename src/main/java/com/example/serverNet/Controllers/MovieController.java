@@ -57,10 +57,10 @@ public class MovieController
     }
 
     //Viewing all movies added by a SPECIFIC USER
-    @GetMapping(value = "movies/{id_number}")
-    List<Movie> getUsersMovies(@PathVariable Long id_number)
+    @GetMapping(value = "movies/{id}")
+    List<Movie> getUsersMovies(@PathVariable Long id)
     {
-        return movieRepository.findMoviesByUser(id_number);
+        return movieRepository.findMoviesByUser(id);
         //.orElseThrow(()->new NotFoundException("No movie added by id: "+ id_number + "found."));
     }
 
@@ -89,9 +89,10 @@ public class MovieController
 
     //User adding a movie they are suggesting
     @PostMapping(value = "movies/{id_number}")
-    public Movie suggestMovie(@PathVariable Long id_number, @RequestBody Movie movie)
+    public Movie suggestMovie(@PathVariable String id_number, @RequestBody Movie movie)
     {
-        User user = userRepository.findById_number(id_number).orElseThrow(()->new NotFoundException("User with id number:"+ id_number+ " not found"));
+        User user = userRepository.findById(id_number).orElseThrow(()->new NotFoundException("User with id number:  "+ id_number + " not found"));
+                //.orElseThrow(()->new NotFoundException("User with id number:"+ id_number+ " not found"));
         Set<Category> categories = new HashSet<>();
 
         for(Category category_id : movie.getCategories())
@@ -109,12 +110,13 @@ public class MovieController
 
     //User deleting a movie they have suggested
     @DeleteMapping("movies/{id_number}/{movie_id}")
-    public void deleteMovie(@PathVariable Long movie_id, @PathVariable Long id_number)
+    public void deleteMovie(@PathVariable Long movie_id, @PathVariable String id_number)
     {
         User currentUser = userRepository.findById(id_number).orElseThrow(()->new NotFoundException("User with id number:  "+ id_number + " not found"));
+                //.orElseThrow(()->new NotFoundException("User with id number:  "+ id_number + " not found"));
         Movie requestedMovie = movieService.findMovieById(movie_id).orElseThrow(()->new NotFoundException("Movie with ID: "+ movie_id +" not found."));
 
-        if(currentUser.getId_number() != requestedMovie.getUser().getId_number())
+        if(!currentUser.getId_number().equals(requestedMovie.getUser().getId_number()))
         {
             throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Ensure that you are only deleting a movie you added");
         }
@@ -126,12 +128,13 @@ public class MovieController
 
     //User updating a movie they have suggested
     @PatchMapping("movies/{id_number}/{movie_id}")
-    public Movie updateMovie(@PathVariable Long movie_id, @PathVariable Long id_number, @RequestBody Movie movie)
+    public Movie updateMovie(@PathVariable Long movie_id, @PathVariable String id_number, @RequestBody Movie movie)
     {
         User currentUser = userRepository.findById(id_number).orElseThrow(()->new NotFoundException("User with id number:  "+ id_number + " not found"));
+                //.orElseThrow(()->new NotFoundException("User with id number:  "+ id_number + " not found"));
         Movie requestedMovie = movieService.findMovieById(movie_id).orElseThrow(()->new NotFoundException("Movie with Id: "+ movie_id +" not found."));
 
-        if(currentUser.getId_number() != requestedMovie.getUser().getId_number())
+        if(!currentUser.getId_number().equals(requestedMovie.getUser().getId_number()))
         {
             throw  new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,"Ensure that you are the owner of the movie");
         }

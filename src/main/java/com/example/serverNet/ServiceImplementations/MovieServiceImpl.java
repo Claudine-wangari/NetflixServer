@@ -32,7 +32,7 @@ public class MovieServiceImpl implements MovieService
     }
 
     @Override
-    public List<Movie> findMoviesByUser(Long id_number)
+    public List<Movie> findMoviesByUser(String id_number)
     {
         User currentUser = userRepository.findById(id_number).orElseThrow(()-> new NotFoundException("User of id: "+id_number+" does not exist"));
         return movieRepository.findMoviesByUser(currentUser);
