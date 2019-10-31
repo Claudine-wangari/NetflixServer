@@ -89,8 +89,9 @@ public class MovieController
 
     //User adding a movie they are suggesting
     @PostMapping(value = "movies/{id_number}")
-    public Movie suggestMovie(@PathVariable Long id_number, @RequestBody Movie movie){
-        User user = userRepository.findById(id_number).orElseThrow(()->new NotFoundException("User with id number:"+ id_number+ " not found"));
+    public Movie suggestMovie(@PathVariable Long id_number, @RequestBody Movie movie)
+    {
+        User user = userRepository.findById_number(id_number).orElseThrow(()->new NotFoundException("User with id number:"+ id_number+ " not found"));
         Set<Category> categories = new HashSet<>();
 
         for(Category category_id : movie.getCategories())
